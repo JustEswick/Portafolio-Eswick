@@ -154,7 +154,7 @@ export const Creator = () => {
               
               {/* ASCII Video Container */}
               <div className="relative mx-auto flex h-[300px] w-full max-w-[500px] items-center justify-center overflow-hidden sm:h-[400px]">
-                <div className="w-full scale-[0.85] transform-gpu origin-center sm:scale-100">
+                <div className="w-full transform-gpu origin-center sm:scale-110">
                   <Eswickes />
                 </div>
               </div>
