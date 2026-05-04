@@ -268,23 +268,44 @@ const APPEARANCE = {
 };
 const CHARS = " .'`^\\\",:;Il!i~+_-?][}{1)(|\\\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
 
-// Strips common leading whitespace from all lines in a frame
-function trimCommonLeadingSpaces(frame: string): string {
-	const lines = frame.split('\n');
-	// Find minimum leading spaces among non-empty lines
-	let minSpaces = Infinity;
-	for (const line of lines) {
-		if (line.trim().length === 0) continue; // skip blank lines
-		const leadingSpaces = line.match(/^ */)?.[0].length ?? 0;
-		if (leadingSpaces < minSpaces) minSpaces = leadingSpaces;
+// Normalizes all frames to a uniform global bounding box to prevent animation jitter
+function processFrames(frames: string[]): string[] {
+	let globalMinSpaces = Infinity;
+	let globalMaxRightIndex = 0;
+
+	// Pass 1: Find the global bounding box across all frames
+	for (const frame of frames) {
+		const lines = frame.split('\n');
+		for (const line of lines) {
+			if (line.trim().length === 0) continue; // skip blank lines
+			
+			const leadingSpaces = line.match(/^ */)?.[0].length ?? 0;
+			if (leadingSpaces < globalMinSpaces) globalMinSpaces = leadingSpaces;
+
+			const lastCharIdx = line.trimEnd().length;
+			if (lastCharIdx > globalMaxRightIndex) globalMaxRightIndex = lastCharIdx;
+		}
 	}
-	if (minSpaces === Infinity || minSpaces === 0) return frame;
-	// Strip leading spaces and also trim trailing whitespace from every line
-	return lines.map(line => line.slice(minSpaces).trimEnd()).join('\n');
+
+	if (globalMinSpaces === Infinity) globalMinSpaces = 0;
+	
+	const targetWidth = globalMaxRightIndex - globalMinSpaces;
+
+	// Pass 2: Normalize all frames to fit the exact target width
+	return frames.map((frame) => {
+		const lines = frame.split('\n');
+		return lines.map((line) => {
+			// Strip leading spaces
+			let sliced = line.length >= globalMinSpaces ? line.slice(globalMinSpaces) : "";
+			// Strip trailing spaces to reset, then pad to uniform width
+			sliced = sliced.trimEnd();
+			return sliced.padEnd(targetWidth, " ");
+		}).join('\n');
+	});
 }
 
-// Pre-compute trimmed frames once at module load
-const TRIMMED_FRAMES = FRAMES.map(trimCommonLeadingSpaces);
+// Pre-compute normalized frames once at module load
+const TRIMMED_FRAMES = processFrames(FRAMES);
 
 export default function Ascii281() {
 	const [currentFrame, setCurrentFrame] = useState(0);
