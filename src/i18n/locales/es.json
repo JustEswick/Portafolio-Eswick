@@ -1,0 +1,63 @@
+{
+  "hero": {
+    "greeting": "Hola Eswick",
+    "headline": "Construyendo el futuro con AI & Neural Networks",
+    "subtitle": "AI Engineer · Solutions Architect · Creator",
+    "ctaProjects": "Ver proyectos",
+    "ctaContact": "Contáctame",
+    "metadata": "v1.0.0 · Toluca, MX · es-MX"
+  },
+  "stack": {
+    "title": "Core Stack",
+    "subtitle": "Herramientas principales con las que trabajo.",
+    "whatIDoTitle": "What I Do"
+  },
+  "projects": {
+    "title": "Proyectos",
+    "subtitle": "Una selección de trabajos recientes, destacando diseño arquitectónico, integración de inteligencia artificial y desarrollo end-to-end.",
+    "featured": "Destacado",
+    "role": "Rol",
+    "impact": "Impacto",
+    "viewProject": "Ver Proyecto"
+  },
+  "education": {
+    "title": "Educación & Certificaciones",
+    "subtitle": "Trayectoria académica y aprendizaje continuo.",
+    "inProgress": "En Curso",
+    "completed": "Completado",
+    "viewCertificate": "Ver Certificado"
+  },
+  "creator": {
+    "title": "Creator",
+    "subtitle": "Compartiendo conocimiento, insights técnicos y construyendo en público."
+  },
+  "nav": {
+    "stack": "Stack",
+    "projects": "Proyectos",
+    "education": "Educación",
+    "creator": "Creator",
+    "links": "Links"
+  },
+  "footer": {
+    "copyright": "© 2026 Isaac Sánchez Camacho",
+    "madeWith": "Hecho con café y curiosidad"
+  },
+  "social": {
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "tiktok": "TikTok",
+    "youtube": "YouTube",
+    "twitch": "Twitch",
+    "email": "Correo"
+  },
+  "a11y": {
+    "skipToContent": "Saltar al contenido",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "switchLang": "Switch to English",
+    "mainNav": "Navegación principal"
+  },
+  "actions": {
+    "switchLang": "Switch to English"
+  }
+}

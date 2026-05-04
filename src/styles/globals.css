@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+/* =============================================
+ * Sistema de diseño "Neural Brutalism" — Tailwind v4
+ * Tokens adaptados de docs/DESIGN_TOKENS.md
+ * ============================================= */
+
+@theme {
+  /* --- Colores --- */
+  --color-bg: #0A0A0F;
+  --color-surface: #14141C;
+  --color-surface-elevated: #1A1A26;
+  --color-border: #1F1F2E;
+  --color-border-strong: #2D2D42;
+  --color-text: #FFFFFF;
+  --color-text-muted: #CCCCCC;
+  --color-text-subtle: #999999;
+  --color-accent: #00FF94;
+  --color-accent-pink: #FF2E63;
+  --color-accent-blue: #4D5BFF;
+  --color-success: #00FF94;
+  --color-warning: #FFB800;
+  --color-danger: #FF2E63;
+
+  /* --- Tipografía --- */
+  --font-mono: 'JetBrains Mono', 'Geist Mono', monospace;
+  --font-sans: 'Inter', 'Geist Sans', system-ui, sans-serif;
+  --font-pixel: 'VT323', 'Press Start 2P', monospace;
+
+  /* --- Easing --- */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* --- Sombras (glow verde accent) --- */
+  --shadow-glow-sm: 0 0 12px rgba(0, 255, 148, 0.12);
+  --shadow-glow: 0 0 20px rgba(0, 255, 148, 0.15);
+  --shadow-glow-lg: 0 0 40px rgba(0, 255, 148, 0.2);
+
+  /* --- Animaciones --- */
+  --animate-ghost-float: ghost-float 5s ease-in-out infinite;
+  --animate-ghost-glow: ghost-glow 3s ease-in-out infinite;
+  --animate-ghost-blink: ghost-float 5s ease-in-out infinite;
+  --animate-marquee: marquee 30s linear infinite;
+}
+
+/* --- Keyframes del ghost --- */
+@keyframes ghost-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes ghost-glow {
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(0, 255, 148, 0.2)); }
+  50%      { filter: drop-shadow(0 0 28px rgba(0, 255, 148, 0.45)); }
+}
+
+@keyframes ghost-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%, 97%      { transform: scaleY(0.1); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+/* --- Estilos base --- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Selección */
+  ::selection {
+    background-color: rgba(0, 255, 148, 0.3);
+    color: var(--color-text);
+  }
+
+  /* Foco visible accesible */
+  *:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--color-bg),
+      0 0 0 4px var(--color-accent);
+  }
+
+  /* Scrollbar custom */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-border-strong);
+  }
+
+  /* Reduced motion: desactiva todas las animaciones */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* --- Animación de parpadeo en ojos del SVG --- */
+.animate-ghost-blink :is(#eyes, #left-eye, #right-eye) {
+  animation: ghost-blink 4.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* --- Utilidades --- */
+@layer utilities {
+  .bg-liquid-noise {
+    background-color: rgba(20, 20, 28, 0.7); /* Translucent --color-surface */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(0, 255, 148, 0.03), transparent 70%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+  }
+
+  .pixel-flow-vertical {
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--color-accent) 0px,
+      var(--color-accent) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+    background-size: 100% 200%;
+    animation: flow-vertical 1s linear infinite;
+  }
+
+  .pixel-flow-horizontal {
+    background: repeating-linear-gradient(
+      to right,
+      var(--color-accent) 0px,
+      var(--color-accent) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+    background-size: 200% 100%;
+    animation: flow-horizontal 1s linear infinite;
+  }
+}
+
+@keyframes flow-vertical {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 8px; }
+}
+
+@keyframes flow-horizontal {
+  0% { background-position: 0 0; }
+  100% { background-position: 8px 0; }
+}
