@@ -347,7 +347,7 @@ export default function Ascii281() {
 				` }} />
 			)}
 
-			<div style={{ transform: `scale(${scale})`, transformOrigin: "left top" }}>
+			<div style={{ transform: `scale(${scale})`, transformOrigin: "center top" }}>
 				{APPEARANCE.showFrameCounter && (
 					<div style={{ opacity: 0.5, fontSize: "10px", marginBottom: "8px" }}>
 						Frame: {currentFrame + 1}/{FRAMES.length}

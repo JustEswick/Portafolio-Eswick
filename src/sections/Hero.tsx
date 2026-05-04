@@ -72,7 +72,7 @@ export const Hero = () => {
             </a>
             
             <a 
-              href="mailto:hola@eswick.com" 
+              href="mailto:eswicke.contacto@gmail.com" 
               className="flex items-center gap-2 border border-border bg-surface px-6 py-3 font-mono text-sm font-semibold text-text transition-all hover:border-border-strong hover:bg-surface-elevated focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             >
               <Mail size={18} />
