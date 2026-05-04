@@ -268,6 +268,24 @@ const APPEARANCE = {
 };
 const CHARS = " .'`^\\\",:;Il!i~+_-?][}{1)(|\\\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
 
+// Strips common leading whitespace from all lines in a frame
+function trimCommonLeadingSpaces(frame: string): string {
+	const lines = frame.split('\n');
+	// Find minimum leading spaces among non-empty lines
+	let minSpaces = Infinity;
+	for (const line of lines) {
+		if (line.trim().length === 0) continue; // skip blank lines
+		const leadingSpaces = line.match(/^ */)?.[0].length ?? 0;
+		if (leadingSpaces < minSpaces) minSpaces = leadingSpaces;
+	}
+	if (minSpaces === Infinity || minSpaces === 0) return frame;
+	// Strip leading spaces and also trim trailing whitespace from every line
+	return lines.map(line => line.slice(minSpaces).trimEnd()).join('\n');
+}
+
+// Pre-compute trimmed frames once at module load
+const TRIMMED_FRAMES = FRAMES.map(trimCommonLeadingSpaces);
+
 export default function Ascii281() {
 	const [currentFrame, setCurrentFrame] = useState(0);
 	const [scale, setScale] = useState(1);
@@ -284,7 +302,7 @@ export default function Ascii281() {
 			const delta = time - lastTime;
 
 			if (delta >= frameDuration) {
-				setCurrentFrame((current: number) => (current + 1) % FRAMES.length);
+				setCurrentFrame((current: number) => (current + 1) % TRIMMED_FRAMES.length);
 				lastTime = time - (delta % frameDuration);
 			}
 
@@ -302,10 +320,14 @@ export default function Ascii281() {
 			if (!container || !content) return;
 
 			const availableWidth = container.clientWidth;
+			const availableHeight = container.clientHeight;
 			const naturalWidth = content.scrollWidth;
+			const naturalHeight = content.scrollHeight;
 
-			if (availableWidth > 0 && naturalWidth > 0 && naturalWidth > availableWidth) {
-				setScale(availableWidth / naturalWidth);
+			if (availableWidth > 0 && naturalWidth > 0 && availableHeight > 0 && naturalHeight > 0) {
+				const scaleWidth = availableWidth / naturalWidth;
+				const scaleHeight = availableHeight / naturalHeight;
+				setScale(Math.min(scaleWidth, scaleHeight) * 0.95); // 5% padding to ensure it fits perfectly
 			} else {
 				setScale(1);
 			}
@@ -329,10 +351,13 @@ export default function Ascii281() {
 				color: APPEARANCE.textColor,
 				display: "flex",
 				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
 				fontFamily: APPEARANCE.fontFamily,
 				overflow: "hidden",
 				position: "relative",
 				width: "100%",
+				height: "100%",
 			}}
 		>
 			{needsStyles && (
@@ -347,10 +372,10 @@ export default function Ascii281() {
 				` }} />
 			)}
 
-			<div style={{ transform: `scale(${scale})`, transformOrigin: "center top" }}>
+			<div style={{ transform: `scale(${scale})`, transformOrigin: "center center" }}>
 				{APPEARANCE.showFrameCounter && (
 					<div style={{ opacity: 0.5, fontSize: "10px", marginBottom: "8px" }}>
-						Frame: {currentFrame + 1}/{FRAMES.length}
+						Frame: {currentFrame + 1}/{TRIMMED_FRAMES.length}
 					</div>
 				)}
 				<pre
@@ -373,7 +398,7 @@ export default function Ascii281() {
 					}}
 				>
 					{(() => {
-						const text = FRAMES[currentFrame];
+						const text = TRIMMED_FRAMES[currentFrame];
 						const threshold = APPEARANCE.textEffectThreshold;
 
 						if (!text || effect === "none" || threshold <= 0 || !CHARS) {

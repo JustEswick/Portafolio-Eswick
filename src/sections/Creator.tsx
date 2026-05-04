@@ -153,8 +153,8 @@ export const Creator = () => {
               <div className="pointer-events-none absolute inset-0 rounded-2xl border border-dashed border-text-subtle/20" />
               
               {/* ASCII Video Container */}
-              <div className="relative mx-auto flex h-[300px] w-full max-w-[500px] items-center justify-center overflow-hidden sm:h-[400px]">
-                <div className="w-full transform-gpu origin-center sm:scale-110">
+              <div className="relative mx-auto flex h-[350px] w-full max-w-[500px] items-center justify-center overflow-hidden sm:h-[450px]">
+                <div className="h-full w-full">
                   <Eswickes />
                 </div>
               </div>
